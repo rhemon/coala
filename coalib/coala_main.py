@@ -15,6 +15,8 @@ from coalib.misc.CachingUtilities import (
     settings_changed, update_settings_db, get_settings_hash)
 from coalib.misc.Constants import configure_logging
 
+from ipdb import launch_ipdb_on_exception
+
 do_nothing = lambda *args: True
 
 
@@ -26,7 +28,9 @@ def run_coala(console_printer=None,
               nothing_done=do_nothing,
               force_show_patch=False,
               arg_parser=None,
-              arg_list=None):
+              arg_list=None,
+              args=None,
+              debug=False):
     """
     This is a main method that should be usable for almost all purposes and
     reduces executing coala to one function call.
@@ -126,6 +130,11 @@ def run_coala(console_printer=None,
         elif yielded_results:
             exitcode = 5
     except BaseException as exception:  # pylint: disable=broad-except
+        if debug:
+            raise
+        if args and args.debug:
+            with launch_ipdb_on_exception():
+                raise
         exitcode = exitcode or get_exitcode(exception, log_printer)
 
     return results, exitcode, file_dicts
