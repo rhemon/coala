@@ -1,11 +1,13 @@
+from os.path import exists
+from os.path import isfile
+import shutil
+
+from coala_utils.FileUtils import detect_encoding
+
 from coalib.bearlib.languages import Language
 from coalib.results.result_actions.ResultAction import ResultAction
 from coalib.results.Result import Result
 from coalib.results.Diff import Diff
-from coala_utils.FileUtils import detect_encoding
-from os.path import exists
-from os.path import isfile
-import shutil
 
 
 class IgnoreResultAction(ResultAction):
