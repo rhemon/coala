@@ -5,6 +5,7 @@ from os import environ
 from coalib.results.Diff import Diff
 from coalib.results.Result import Result
 from coalib.results.result_actions.ResultAction import ResultAction
+from coalib.processes.Processing import detect_encoding
 
 EDITOR_ARGS = {
     'subl': '--wait',
@@ -56,7 +57,7 @@ class OpenEditorAction(ResultAction):
             subprocess.call(editor_args)
 
         for original_name, filename in filenames.items():
-            with open(filename, encoding='utf-8') as file:
+            with open(filename, encoding=detect_encoding(filename)) as file:
                 file_diff_dict[original_name] = Diff.from_string_arrays(
                     original_file_dict[original_name], file.readlines(),
                     rename=False if original_name == filename else filename)
